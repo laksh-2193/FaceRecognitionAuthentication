@@ -121,6 +121,14 @@ th, td{
     }
     else{
     document.getElementById("faceMatchingPer").innerHTML = status;
+    if(parseInt(status)>60){
+      window.location = "static/successPayment.html";
+
+    }
+    else{
+    document.getElementById("faceMatchingPer").innerHTML = status + "Matching Failed";
+
+    }
 
     }
 
