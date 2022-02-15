@@ -25,7 +25,22 @@ app = Flask(__name__, template_folder='./templates')
 
 camera = cv2.VideoCapture(0)
 
+@app.route('/compare')
 def compareFaces():
+    global capture
+
+    if (capture):
+        success, frame = camera.read()
+        if success:
+            frame = detect_face(frame)
+
+
+        capture = 0
+
+        p = os.path.sep.join(['shots', 'shot_targetImage.png'])
+        cv2.imwrite(p, frame)
+        print("Image saved")
+
     with open('new_user_credentials.csv', 'r') as input:
         next(input)
         reader = csv.reader(input)
@@ -127,13 +142,14 @@ def tasks():
     global switch, camera, matchingPer
     if request.method == 'POST':
         if request.form.get('click') == 'Capture':
+
             global capture
             capture = 1
 
 
     elif request.method == 'GET':
-        return render_template('facerecog.html', faceMat=matchingPer)
-    return render_template('facerecog.html', faceMat=matchingPer)
+        return render_template('facerecog.html')
+    return render_template('facerecog.html')
 
 
 if __name__ == '__main__':
